@@ -1,5 +1,66 @@
 
-package com.example.demo.service;
+package com.example.demo.serviceprivate void processCommand(String input) {
+    if (input.isEmpty()) {
+        return;
+    }
+
+    String[] parts = input.split("\\s+");
+    String command = parts[0].toLowerCase();
+
+    try {
+        switch (command) {
+            case "add":
+                if (parts.length < 3) {
+                    System.out.println("Usage: add <name> <surname>");
+                } else {
+                    userService.addUser(parts[1], parts[2]);
+                }
+                break;
+            case "get":
+                if (parts.length < 2) {
+                    System.out.println("Usage: get <id>");
+                } else {
+                    userService.getUser(Long.parseLong(parts[1]));
+                }
+                break;
+            case "remove":
+                if (parts.length < 2) {
+                    System.out.println("Usage: remove <id>");
+                } else {
+                    userService.removeUser(Long.parseLong(parts[1]));
+                }
+                break;
+            case "edit":
+                if (parts.length < 4) {
+                    System.out.println("Usage: edit <id> <newName> <newSurname>");
+                } else {
+                    userService.editUser(Long.parseLong(parts[1]), parts[2], parts[3]);
+                }
+                break;
+            case "list":
+                if (userService instanceof UserServiceImpl) {
+                    ((UserServiceImpl) userService).listAllUsers();
+                }
+                break;
+            case "help":
+                printHelp();
+                break;
+            case "exit":
+                System.out.println("Exiting application...");
+                running = false;
+                return; // Skip printing help after exit
+            default:
+                System.out.println("Unknown command. Type 'help' for available commands.");
+        }
+    } catch (NumberFormatException e) {
+        System.out.println("Error: ID must be a number");
+    } catch (Exception e) {
+        System.out.println("Error: " + e.getMessage());
+    }
+
+    // Print help after every command
+    printHelp();
+};
 
 import com.example.demo.repo.FakeRepoInterface;
 import org.junit.jupiter.api.AfterEach;
