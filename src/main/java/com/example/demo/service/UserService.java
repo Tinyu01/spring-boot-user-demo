@@ -1,5 +1,8 @@
-package main.java.com.example.demo.service;
+// FILE: UserService.java
+package com.example.demo.service;
 
-public class UserService {
-    
+public interface UserService {
+    void addUser(String name, String surname);
+    void removeUser(long id);
+    void getUser(long id);
 }
