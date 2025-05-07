@@ -1,5 +1,10 @@
-package main.java.com.example.demo.repo;
+// FILE: FakeRepoInterface.java
+package com.example.demo.repo;
 
-public class FakeRepoInterface {
-    
+import com.example.demo.model.User;
+
+public interface FakeRepoInterface {
+    String insertUser(long id, String name, String surname);
+    String findUserById(long id);
+    String deleteUser(long id);
 }
