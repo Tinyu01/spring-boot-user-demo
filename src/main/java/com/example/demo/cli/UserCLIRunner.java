@@ -1,4 +1,3 @@
-
 package com.example.demo.cli;
 
 import com.example.demo.service.UserService;
@@ -44,6 +43,7 @@ public class UserCLIRunner implements CommandLineRunner {
 
     private void processCommand(String input) {
         if (input.isEmpty()) {
+            printHelp(); // Show help even if no input is provided
             return;
         }
 
@@ -106,13 +106,16 @@ public class UserCLIRunner implements CommandLineRunner {
                 case "exit":
                     System.out.println("Exiting application...");
                     running = false;
-                    break;
+                    return; // Skip printing help after exit
                 default:
                     System.out.println("Unknown command. Type 'help' for available commands.");
             }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
+
+        // Print help after every command
+        printHelp();
     }
 
     private void printHelp() {
