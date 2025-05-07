@@ -88,7 +88,7 @@ spring-boot-user-demo/
 
 1. Clone the repository:
 ```
-git clone https://github.com/yourusername/spring-boot-user-demo.git
+git clone https://github.com/Tinyu01/spring-boot-user-demo.git
 cd spring-boot-user-demo
 ```
 
