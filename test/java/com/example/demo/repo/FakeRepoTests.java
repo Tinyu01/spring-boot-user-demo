@@ -1,4 +1,4 @@
-// FILE: FakeRepoTests.java
+
 package com.example.demo.repo;
 
 import com.example.demo.model.User;
@@ -9,6 +9,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
 public class FakeRepoTests {
 
     private FakeRepo fakeRepo;
