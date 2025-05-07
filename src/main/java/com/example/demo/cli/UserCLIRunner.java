@@ -1,4 +1,4 @@
-// FILE: UserCLIRunner.java
+
 package com.example.demo.cli;
 
 import com.example.demo.service.UserService;
@@ -9,8 +9,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+/**
+ * UserCLIRunner is responsible for running the User Management System CLI.
+ */
 @Component
 public class UserCLIRunner implements CommandLineRunner {
+
     private final UserService userService;
     private final Scanner scanner = new Scanner(System.in);
     private boolean running = true;
@@ -28,8 +32,13 @@ public class UserCLIRunner implements CommandLineRunner {
 
         while (running) {
             System.out.print("> ");
-            String input = scanner.nextLine().trim();
-            processCommand(input);
+            try {
+                String input = scanner.nextLine().trim();
+                processCommand(input);
+            } catch (java.util.NoSuchElementException e) {
+                System.out.println("No input available. Exiting...");
+                running = false;
+            }
         }
     }
 
@@ -54,14 +63,36 @@ public class UserCLIRunner implements CommandLineRunner {
                     if (parts.length < 2) {
                         System.out.println("Usage: get <id>");
                     } else {
-                        userService.getUser(Long.parseLong(parts[1]));
+                        try {
+                            long id = Long.parseLong(parts[1]);
+                            userService.getUser(id);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Error: ID must be a number");
+                        }
                     }
                     break;
                 case "remove":
                     if (parts.length < 2) {
                         System.out.println("Usage: remove <id>");
                     } else {
-                        userService.removeUser(Long.parseLong(parts[1]));
+                        try {
+                            long id = Long.parseLong(parts[1]);
+                            userService.removeUser(id);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Error: ID must be a number");
+                        }
+                    }
+                    break;
+                case "edit":
+                    if (parts.length < 4) {
+                        System.out.println("Usage: edit <id> <newName> <newSurname>");
+                    } else {
+                        try {
+                            long id = Long.parseLong(parts[1]);
+                            userService.editUser(id, parts[2], parts[3]);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Error: ID must be a number");
+                        }
                     }
                     break;
                 case "list":
@@ -79,8 +110,6 @@ public class UserCLIRunner implements CommandLineRunner {
                 default:
                     System.out.println("Unknown command. Type 'help' for available commands.");
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Error: ID must be a number");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -90,6 +119,7 @@ public class UserCLIRunner implements CommandLineRunner {
         System.out.println("  add <name> <surname> - Add a new user");
         System.out.println("  get <id> - Get user by ID");
         System.out.println("  remove <id> - Remove user by ID");
+        System.out.println("  edit <id> <newName> <newSurname> - Edit user details");
         System.out.println("  list - List all users");
         System.out.println("  help - Show this help");
         System.out.println("  exit - Exit the application");
